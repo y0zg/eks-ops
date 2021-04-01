@@ -1,0 +1,30 @@
+---
+- name: copy prometheus template
+  copy:
+    dest: /home/ubuntu/
+    src: compose
+    mode: '0755'
+
+- name: copy new prometheus config
+  template:
+    src: prometheus.yml.j2
+    dest: /home/ubuntu/compose/prometheus/prometheus.yml
+
+- name: Run container
+  shell:
+    cmd: "docker-compose up -d"
+    chdir: /home/ubuntu/compose
+
+- name: copy consul prometheus service  template
+  copy:
+    dest: /etc/consul.d/prom.json
+    src: prom.json
+    mode: '0755'
+  notify: restart consul service
+
+- name: copy consul grafana service  template
+  copy:
+    dest: /etc/consul.d/grafana.json
+    src: grafana.json
+    mode: '0755'
+  notify: restart consul service

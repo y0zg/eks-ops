@@ -1,0 +1,6 @@
+---
+# handlers file for elasticsearch
+- name: restart consul service
+  service:
+    name: consul.service
+    state: restarted

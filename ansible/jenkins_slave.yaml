@@ -1,0 +1,9 @@
+- name: jenkins_slave_playbook
+  hosts: tag_jenkins_slave_true
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - docker
+    - jenkins-slave

@@ -1,0 +1,20 @@
+---
+galaxy_info:
+  author: Maxim
+  company: opsschool
+  min_ansible_version: 1.4
+
+  platforms:
+  - name: EL
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
+  - name: Debian
+    versions:
+    - all
+
+  categories:
+  - development
+dependencies: []

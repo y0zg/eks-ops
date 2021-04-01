@@ -1,0 +1,10 @@
+- name: elk_playbook
+  hosts: tag_elk_server_true
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - java
+    - elasticsearch
+    - kibana

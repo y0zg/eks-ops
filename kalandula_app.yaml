@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kalandula
+  labels:
+    app: kalandula
+spec:
+  selector:
+    matchLabels:
+      app: kalandula
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        app: kalandula
+    spec:
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: zone
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: kalandula
+      - maxSkew: 1
+        topologyKey: node
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app: kalandula
+      containers:
+        - image: 6037159/jenkins-test:latest
+          name: kalandula
+          resources:
+          ports:
+            - containerPort: 5000
+              name: http
+              protocol: TCP

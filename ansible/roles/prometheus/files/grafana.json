@@ -1,0 +1,29 @@
+{
+    "service": {
+      "name": "Grafana",
+      "port": 3000,
+      "tags": ["Grafana"],
+      "checks": [
+        {
+          "id": "tcp",
+          "name": "TCP on port 3000",
+          "tcp": "localhost:3000",
+          "interval": "10s",
+          "timeout": "1s"
+        },
+        {
+          "id": "http",
+          "name": "HTTP on port 3000",
+          "http": "http://localhost:3000/",
+          "interval": "30s",
+          "timeout": "1s"
+        },
+        {
+          "id": "service",
+          "name": "Grafana service test",
+          "args": ["systemctl", "status", "docker.service"],
+          "interval": "60s"
+        }
+      ]
+    }
+  }

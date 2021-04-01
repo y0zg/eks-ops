@@ -1,0 +1,9 @@
+- name: mysql_playbook
+  hosts: tag_mysql_server_true
+  remote_user: ubuntu
+  become: yes
+  become_user: root
+  become_method: sudo
+  roles:
+    - mysql
+ 

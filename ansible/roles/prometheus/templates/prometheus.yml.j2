@@ -1,0 +1,49 @@
+---
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    static_configs:
+    - targets: ['localhost:9090']
+
+  - job_name: 'node_exporter'
+    consul_sd_configs:
+      - server: {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:8500
+    relabel_configs:
+      - source_labels: ['__address__']
+        target_label: '__address__'
+        separator: ':'
+        regex: '(.*):.*'
+        replacement: $1:9100
+      - source_labels: ['__meta_consul_node']
+        target_label : instance
+
+  - job_name: 'consul_exporter'
+    metrics_path : 'v1/agent/metrics'
+    params:
+        format : ['prometheus']
+    consul_sd_configs:
+      - server: {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:8500
+        services: 
+          - consul
+    relabel_configs:
+      - source_labels: ['__address__']
+        target_label: '__address__'
+        separator: ':'
+        regex: '(.*):.*'
+        replacement: $1:8500  
+  - job_name: 'kan_exporter'
+    scrape_interval: 25s
+    metrics_path: '/'
+    params:
+        format: ['prometheus']
+    consul_sd_configs:
+      - server: '{{ ansible_eth0.ipv4.address }}:8500'
+        services:
+            - kalandula-default
+    relabel_configs:
+      - source_labels: [ '__address__' ]
+        target_label: '__address__'
+        regex: '(.*):(.*)
+        replacement: '$1:5001'
+      - source_labels: [__meta_consul_node]
+        target_label: instance 

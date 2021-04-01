@@ -1,0 +1,9 @@
+---
+ - name: Restart MySQL
+   service: name=mysql state=restarted
+   
+ - name: restart consul
+   ansible.builtin.service:
+     name: consul.service
+     state: restarted
+   listen: "restart consul service" 

@@ -1,0 +1,27 @@
+---
+ - name: Install the MySQL packages
+
+   apt: name={{ item }} state=installed update_cache=yes state=present
+   with_items:
+     - mysql-server
+     - mysql-client
+     - python-mysqldb
+     - libmysqlclient-dev
+     
+
+ - name: Copy the root credentials as .my.cnf file
+   template: src=root.cnf.j2 dest=~/.my.cnf mode=0600
+
+ - name: enable slow path option
+   command: "{{ item }}"
+   with_items:
+        - sudo mysql -u root  -e"SET GLOBAL slow_query_log = 'ON'";
+        - sudo mysql -u root  -e"SET GLOBAL long_query_time = 20";
+        - sudo mysql -u root  -e"SET GLOBAL slow_query_log_file = '/var/log/mysql/slow-query.log'";
+   
+ - name: copy consul mysql  service  template
+   copy:
+     dest: /etc/consul.d/grafana.json
+     src: grafana.json
+     mode: '0755'
+   notify: restart consul service

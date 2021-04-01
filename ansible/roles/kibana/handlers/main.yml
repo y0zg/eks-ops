@@ -1,0 +1,6 @@
+---
+# handlers file for kibana
+- name: restart consul service
+  service:
+    name: consul.service
+    state: restarted

@@ -1,0 +1,22 @@
+{
+    "service": {
+      "name": "MySql",
+      "port": 3306,
+      "tags": ["mysql"],
+      "checks": [
+        {
+          "id": "tcp",
+          "name": "TCP on port 3306",
+          "tcp": "localhost:3306",
+          "interval": "10s",
+          "timeout": "1s"
+        },
+        {
+          "id": "service",
+          "name": "mysql service test",
+          "args": ["systemctl", "status", "mysql"],
+          "interval": "60s"
+        }
+      ]
+    }
+  }
